@@ -1,0 +1,106 @@
+#!/bin/bash
+
+# Source config file
+. ./setup.conf
+
+# Clone latest gitmirrors repo into local project folder
+# and move it into correct locstion for project.
+for group in "${groupArray[@]}"; do
+git clone $gitmirrorsRepo ./mirrormanagement/$group
+sed "37s/.*/gitlab_namespace=\"${group}\"/" ./mirrormanagement/$group/config.sh.SAMPLE > ./mirrormanagement/$group/config.sh
+sed -i "39s/.*/gitlab_url=\"${gitlabURL}\"/" ./mirrormanagement/$group/config.sh
+sed -i "42s/.*/gitlab_user=\"${gitlabUser}\"/" ./mirrormanagement/$group/config.sh
+sed -i "50s/.*/http_remote=true/" ./mirrormanagement/$group/config.sh
+sed -i "58s/.*/issues_enabled=\"${issues_enabled}\"/" ./mirrormanagement/$group/config.sh
+sed -i "59s/.*/wall_enabled=\"${wall_enabled}\"/" ./mirrormanagement/$group/config.sh
+sed -i "60s/.*/wiki_enabled=\"${wiki_enabled}\"/" ./mirrormanagement/$group/config.sh
+sed -i "61s/.*/snippets_enabled=\"${snippets_enabled}\"/" ./mirrormanagement/$group/config.sh
+sed -i "62s/.*/gitlab_user=\"${merge_requests_enabled}\"/" ./mirrormanagement/$group/config.sh
+sed -i "63s/.*/public=\"${public}\"/" ./mirrormanagement/$group/config.sh
+rm ./mirrormanagement/$group/config.sh.SAMPLE
+done
+
+# Generate an ssh key
+echo -e "\n\n\n" | ssh-keygen -t rsa
+
+# Generate ssh server config
+mkdir ./.ssh
+cat > ./.ssh/config <<EOF
+Host $gitlabURL
+    User git
+EOF
+
+# Generate private token file used by gitlab-mirrors
+echo "$gitlabToken" > ./private_token
+
+# Generate mirror script.
+cat > mirror <<'EOF'
+#!/bin/bash
+
+# Source config file
+. ./setup.conf
+
+# Setting the arguments for the bash script
+while getopts g:n:r: option 
+do
+case "${option}" 
+in 
+g) GROUP=${OPTARG};; 
+n) NAME=${OPTARG};; 
+r) REPO=${OPTARG};; 
+esac
+done
+
+# Test to make sure all arguments are specified by the user
+if [ -z "${GROUP}" ]
+  then
+    echo "No Gitlab group was specified" 
+    exit
+fi
+
+if [ -z "${NAME}" ]
+  then
+    echo "No Gitlab repo name was specified"
+    exit
+fi
+
+if [ -z "${REPO}" ]
+  then
+    echo "No Github source repo was specified"
+    exit
+fi
+
+# Testing to make sure the group specified is set in the variables
+wronggroup=0
+for group in "${groupArray[@]}"; do
+if [[ ${GROUP} != "$group" ]] 
+then
+  ((wronggroup=wronggroup+1))
+fi
+done
+
+# Main switch script, depending on which group is specified it runs the add mirror in that location TODO: make this into proper for loop that works with user variables.
+if (( "$wronggroup" > ((groupCount-1)) ))
+ then
+  echo "The Gitlab group you specified does not exist, please make sure you select a group in the groups array of this script."
+  exit
+ else
+
+for group in "${groupArray[@]}"; do
+if [[ ${GROUP} = "$group" ]] 
+then
+      echo "Mirroring repo ${REPO} into Gitlab group $group"
+    ./mirrormanagement/$group/gitlab-mirrors/add_mirror.sh --git --project-name ${NAME} --mirror ${REPO}
+fi
+done
+
+fi
+EOF
+chmod u+x mirror
+
+echo ""
+echo "Please put this SSH key into your gitlab mirror user."
+echo ""
+echo "SSH Key:"
+cat ./ssh/id_rsa.pub
+
