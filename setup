@@ -7,23 +7,23 @@
 # and move it into correct locstion for project.
 for group in "${groupArray[@]}"; do
 git clone $gitmirrorsRepo ~/$projectLocation/mirrormanagement/$group
+chmod 755 ~/$projectLocation/mirrormanagement/$group/*.sh
 sed "37s/.*/gitlab_namespace=\"${group}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh.SAMPLE > ~/$projectLocation/mirrormanagement/$group/config.sh
-sed -i "39s/.*/gitlab_url=\"${gitlabURL}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "39s,.*,gitlab_url=\"${gitlabURL}\"," ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "42s/.*/gitlab_user=\"${gitlabUser}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "50s/.*/http_remote=true/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "58s/.*/issues_enabled=\"${issues_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "59s/.*/wall_enabled=\"${wall_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "60s/.*/wiki_enabled=\"${wiki_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "61s/.*/snippets_enabled=\"${snippets_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
-sed -i "62s/.*/gitlab_user=\"${merge_requests_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "62s/.*/merge_requests_enabled=\"${merge_requests_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "63s/.*/public=\"${public}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 done
 
-# Generate an ssh key
+# Generate a ssh key
 echo -e "\n\n\n" | ssh-keygen -t rsa
 
 # Generate ssh server config
-mkdir ~/.ssh
 cat > ~/.ssh/config <<EOF
 Host $gitlabURL
     User git
@@ -43,7 +43,7 @@ for group in "${groupArray[@]}"; do
 if [[ $(crontab -l | egrep -v "^(#|$)" | grep -q '$group/git-mirrors.sh'; echo $?) == 1 ]]
 then
     set -f
-    printf "$(crontab -l ; echo @hourly ~/$projectLocation/projectmanagement/$group/git-mirrors.sh')\n" | crontab -
+    printf "$(crontab -l ; echo '@hourly ~/$projectLocation/projectmanagement/$group/git-mirrors.sh')\n" | crontab -
     set +f
 fi
 done
@@ -61,6 +61,7 @@ cat > update <<EOF
 
 for group in "${groupArray[@]}"; do
 git pull $gitmirrorsRepo ~/$projectLocation/mirrormanagement/$group
+chmod 755 ~/$projectLocation/mirrormanagement/$group/*.sh
 sed "37s/.*/gitlab_namespace=\"${group}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh.SAMPLE > ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "39s/.*/gitlab_url=\"${gitlabURL}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "42s/.*/gitlab_user=\"${gitlabUser}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
@@ -148,5 +149,5 @@ echo ""
 echo "Please put this SSH key into your gitlab mirror user."
 echo ""
 echo "SSH Key:"
-cat ./ssh/id_rsa.pub
+cat ~/.ssh/id_rsa.pub
 
