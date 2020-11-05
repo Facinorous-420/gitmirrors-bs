@@ -8,7 +8,7 @@
 for group in "${groupArray[@]}"; do
 git clone $gitmirrorsRepo ~/$projectLocation/mirrormanagement/$group
 chmod 755 ~/$projectLocation/mirrormanagement/$group/*.sh
-sed "10s,.*,user_home=\"/home/${system_user}/gitmirrors-bs\"," ~/$projectLocation/mirrormanagement/$group/config.sh.SAMPLE > ~/$projectLocation/mirrormanagement/$group/config.sh
+sed "10s,.*,user_home=\"/home/${USER}/gitmirrors-bs\"," ~/$projectLocation/mirrormanagement/$group/config.sh.SAMPLE > ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "37s/.*/gitlab_namespace=\"${group}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "39s,.*,gitlab_url=\"${gitlabURL}\"," ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "42s/.*/gitlab_user=\"${gitlabUser}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
@@ -63,7 +63,7 @@ cat > update <<EOF
 for group in "${groupArray[@]}"; do
 git pull $gitmirrorsRepo ~/$projectLocation/mirrormanagement/$group
 chmod 755 ~/$projectLocation/mirrormanagement/$group/*.sh
-sed "10s,.*,user_home=\"/home/${system_user}/gitmirrors-bs\"," ~/$projectLocation/mirrormanagement/$group/config.sh.SAMPLE > ~/$projectLocation/mirrormanagement/$group/config.sh
+sed "10s,.*,user_home=\"/home/${USER}/gitmirrors-bs\"," ~/$projectLocation/mirrormanagement/$group/config.sh.SAMPLE > ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "37s/.*/gitlab_namespace=\"${group}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "39s,.*,gitlab_url=\"${gitlabURL}\"," ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "42s/.*/gitlab_user=\"${gitlabUser}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
