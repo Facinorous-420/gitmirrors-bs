@@ -1,1 +1,6 @@
-./repositorymanagement/
+repositorymanagement/
+mirror
+update
+setcron
+creategroups
+setup.conf
