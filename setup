@@ -40,10 +40,10 @@ cat > setcron <<EOF
 . ./setup.conf
 
 for group in "${groupArray[@]}"; do
-if [[ $(crontab -l | egrep -v "^(#|$)" | grep -q '$group/git-mirrors.sh'; echo $?) == 1 ]]
+if [[ $(crontab -l | egrep -v "^(#|$)" | grep -q ''"$group"'/git-mirrors.sh'; echo $?) == 1 ]]
 then
     set -f
-    printf "$(crontab -l ; echo '@hourly ~/$projectLocation/projectmanagement/$group/git-mirrors.sh')\n" | crontab -
+    printf "$(crontab -l ; echo '@hourly ~/'"$projectLocation"'/projectmanagement/'"$group"'/git-mirrors.sh')\n" | crontab -
     set +f
 fi
 done
