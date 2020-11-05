@@ -6,32 +6,76 @@
 # Clone latest gitmirrors repo into local project folder
 # and move it into correct locstion for project.
 for group in "${groupArray[@]}"; do
-git clone $gitmirrorsRepo ./mirrormanagement/$group
-sed "37s/.*/gitlab_namespace=\"${group}\"/" ./mirrormanagement/$group/config.sh.SAMPLE > ./mirrormanagement/$group/config.sh
-sed -i "39s/.*/gitlab_url=\"${gitlabURL}\"/" ./mirrormanagement/$group/config.sh
-sed -i "42s/.*/gitlab_user=\"${gitlabUser}\"/" ./mirrormanagement/$group/config.sh
-sed -i "50s/.*/http_remote=true/" ./mirrormanagement/$group/config.sh
-sed -i "58s/.*/issues_enabled=\"${issues_enabled}\"/" ./mirrormanagement/$group/config.sh
-sed -i "59s/.*/wall_enabled=\"${wall_enabled}\"/" ./mirrormanagement/$group/config.sh
-sed -i "60s/.*/wiki_enabled=\"${wiki_enabled}\"/" ./mirrormanagement/$group/config.sh
-sed -i "61s/.*/snippets_enabled=\"${snippets_enabled}\"/" ./mirrormanagement/$group/config.sh
-sed -i "62s/.*/gitlab_user=\"${merge_requests_enabled}\"/" ./mirrormanagement/$group/config.sh
-sed -i "63s/.*/public=\"${public}\"/" ./mirrormanagement/$group/config.sh
-rm ./mirrormanagement/$group/config.sh.SAMPLE
+git clone $gitmirrorsRepo ~/$projectLocation/mirrormanagement/$group
+sed "37s/.*/gitlab_namespace=\"${group}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh.SAMPLE > ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "39s/.*/gitlab_url=\"${gitlabURL}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "42s/.*/gitlab_user=\"${gitlabUser}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "50s/.*/http_remote=true/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "58s/.*/issues_enabled=\"${issues_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "59s/.*/wall_enabled=\"${wall_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "60s/.*/wiki_enabled=\"${wiki_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "61s/.*/snippets_enabled=\"${snippets_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "62s/.*/gitlab_user=\"${merge_requests_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "63s/.*/public=\"${public}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 done
 
 # Generate an ssh key
 echo -e "\n\n\n" | ssh-keygen -t rsa
 
 # Generate ssh server config
-mkdir ./.ssh
-cat > ./.ssh/config <<EOF
+mkdir ~/.ssh
+cat > ~/.ssh/config <<EOF
 Host $gitlabURL
     User git
 EOF
 
 # Generate private token file used by gitlab-mirrors
 echo "$gitlabToken" > ./private_token
+
+# Generate cron job creation script.
+cat > setcron <<EOF
+#!/bin/bash
+
+# Source config file
+. ./setup.conf
+
+for group in "${groupArray[@]}"; do
+if [[ $(crontab -l | egrep -v "^(#|$)" | grep -q '$group/git-mirrors.sh'; echo $?) == 1 ]]
+then
+    set -f
+    printf "$(crontab -l ; echo @hourly ~/$projectLocation/projectmanagement/$group/git-mirrors.sh')\n" | crontab -
+    set +f
+fi
+done
+
+echo "All mirror group's cron jobs have been set up, if they haven't been already."
+EOF
+chmod u+x setcron
+
+# Generate gitlab-mirror dependancy updater script.
+cat > update <<EOF
+#!/bin/bash
+
+# Source config file
+. ./setup.conf
+
+for group in "${groupArray[@]}"; do
+git pull $gitmirrorsRepo ~/$projectLocation/mirrormanagement/$group
+sed "37s/.*/gitlab_namespace=\"${group}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh.SAMPLE > ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "39s/.*/gitlab_url=\"${gitlabURL}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "42s/.*/gitlab_user=\"${gitlabUser}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "50s/.*/http_remote=true/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "58s/.*/issues_enabled=\"${issues_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "59s/.*/wall_enabled=\"${wall_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "60s/.*/wiki_enabled=\"${wiki_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "61s/.*/snippets_enabled=\"${snippets_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "62s/.*/gitlab_user=\"${merge_requests_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "63s/.*/public=\"${public}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+done
+
+echo "All mirror group's gitlab-mirror dependancies have been updated."
+EOF
+chmod u+x update
 
 # Generate mirror script.
 cat > mirror <<'EOF'
@@ -79,7 +123,7 @@ then
 fi
 done
 
-# Main switch script, depending on which group is specified it runs the add mirror in that location TODO: make this into proper for loop that works with user variables.
+# Main switch script, depending on which group is specified it runs the add mirror in that location
 if (( "$wronggroup" > ((groupCount-1)) ))
  then
   echo "The Gitlab group you specified does not exist, please make sure you select a group in the groups array of this script."
@@ -90,13 +134,15 @@ for group in "${groupArray[@]}"; do
 if [[ ${GROUP} = "$group" ]] 
 then
       echo "Mirroring repo ${REPO} into Gitlab group $group"
-    ./mirrormanagement/$group/gitlab-mirrors/add_mirror.sh --git --project-name ${NAME} --mirror ${REPO}
+      ~/$projectLocation/mirrormanagement/$group/gitlab-mirrors/add_mirror.sh --git --project-name ${NAME} --mirror ${REPO}
 fi
 done
 
 fi
 EOF
 chmod u+x mirror
+
+# CREATE A SCRIPT THAT WILL CREATE GROUPS IF NEEDED
 
 echo ""
 echo "Please put this SSH key into your gitlab mirror user."

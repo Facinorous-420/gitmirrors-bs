@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# Source config file
-. ./setup.conf
-
-# Update the gitmirrors repo to latest version.
