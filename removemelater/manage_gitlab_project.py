@@ -24,9 +24,7 @@ except KeyError:
   print >> stderr, "Environment config missing.  Do not run this script standalone."
   exit(1)
 parser = OptionParser()
-#NEW CODE
 parser.add_option("--creategroup",dest="creategroup",action="store_true",default=False)
-#END OF NEW CODE
 parser.add_option("--issues",dest="issues",action="store_true",default=False)
 parser.add_option("--wall",dest="wall",action="store_true",default=False)
 parser.add_option("--merge",dest="merge",action="store_true",default=False)
@@ -129,7 +127,6 @@ def needs_transfer(user, groupname, project):
   else:
     return project.namespace['name'] != namespace
   
-  #NEW CODE
 if options.creategroup:
   found_group = find_group(name=gitlab_namespace)
   
@@ -139,7 +136,6 @@ if options.creategroup:
 
   else:
     create_group=gl.groups.create({'name': f"{gitlab_namespace}", 'path': f"{gitlab_namespace}"})
-   #END OF NEWCODD
 
 if options.create:
   found_group = find_group(name=gitlab_namespace)
