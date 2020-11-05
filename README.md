@@ -1,7 +1,5 @@
 TODO:
 1. Make & test creategroups script < TO BE AIRED >
-2. Test adding more groups after, then running set up script again
-3. Test setcron script again after adding new groups
 
 # Prerequisites
 
@@ -55,7 +53,7 @@ Where `-g` means **destination group name**, `-n` means **destination repo name*
 The first time you run this command, it will ask you to enter the `gitmirror` details for your Gitlab instance. I'm going to try to make this as hands free as possible in the future.
 <br>
 
-If you at any time want to add more groups you can mirror to, simply add them to the setup.conf file and redo the set up process.
+If you at any time want to add more groups you can mirror to, simply add them to the setup.conf file and redo steps **6** and **8** in the Scripts Set Up Section above.
 
 # Updating
 
