@@ -54,14 +54,14 @@ EOF
 chmod u+x setcron
 
 # Generate gitlab-mirror dependancy updater script.
-cat > update <<EOF
+cat > update <<'EOF'
 #!/bin/bash
 
 # Source config file
 . ./setup.conf
 
 for group in "${groupArray[@]}"; do
-git pull $gitmirrorsRepo ~/$projectLocation/mirrormanagement/$group
+(cd ~/$projectLocation/mirrormanagement/$group && git pull)
 chmod 755 ~/$projectLocation/mirrormanagement/$group/*.sh
 sed "10s,.*,user_home=\"/home/${USER}/gitmirrors-bs\"," ~/$projectLocation/mirrormanagement/$group/config.sh.SAMPLE > ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "37s/.*/gitlab_namespace=\"${group}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
