@@ -1,9 +1,7 @@
 TODO:
 1. Make & test creategroups script < TO BE AIRED >
-2. Test update script
-3. Test adding more groups after, then running set up script again
-4. Test setcron script again after adding new groups
-5. Verify folder structure matches the one listed in this README
+2. Test adding more groups after, then running set up script again
+3. Test setcron script again after adding new groups
 
 # Prerequisites
 
