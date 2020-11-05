@@ -135,7 +135,7 @@ for group in "${groupArray[@]}"; do
 if [[ ${GROUP} = "$group" ]] 
 then
       echo "Mirroring repo ${REPO} into Gitlab group $group"
-      ~/$projectLocation/mirrormanagement/$group/gitlab-mirrors/add_mirror.sh --git --project-name ${NAME} --mirror ${REPO}
+      ~/$projectLocation/mirrormanagement/$group/add_mirror.sh --git --project-name ${NAME} --mirror ${REPO}
 fi
 done
 

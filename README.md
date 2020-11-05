@@ -1,12 +1,10 @@
 TODO:
 1. Make & test creategroups script < TO BE AIRED >
-2. Test setcron script
-3. Test mirror script
-4. Test update script
-5. Test adding more groups after, then running set up script again
-6. Test setcron script again after adding new groups
-7. Verify folder structure matches the one listed in this README
-8. Rewrite this README to actually look good and be easy to follow
+2. Test mirror script
+3. Test update script
+4. Test adding more groups after, then running set up script again
+5. Test setcron script again after adding new groups
+6. Verify folder structure matches the one listed in this README
 
 # Prerequisites
 
@@ -17,21 +15,24 @@ TODO:
 * [GNU coreutils][coreutils]
 * [git 1.8.0][git] or later
 
+#### user setup
+
+  1. Create a user in your gitlab, name it `gitmirror`
+  2. Create a user on your linux machine, call it `gitmirror` by running: `sudo adduser gitmirror`
+
 #### python-gitlab
 
-   `yum install python-pip` | `sudo apt install python-pip`
-   `pip install python-gitlab`
+   `sudo apt install python-pip`
+   then run `pip install python-gitlab` as your `gitmirror` user
 
 
-# Set Up
+# Script Set Up
 
-1. Create a user in your gitlab, name it `gitmirror`
-2. Create a user on your linux machine, call it `gitmirror` by running: `sudo adduser gitmirror`
-3. Switch to the new user by typing `su - gitmirror` and by default you are, but make sure you are in it's home directory by typing `cd ~`
-4. Clone this repo by typing `git clone https://github.com/Facinorous-420/gitmirrors-bs.git`
-5. Enter the new directory by typing `cd gitmirrors-bs`
-6. Edit setup.conf by typing `nano setup.conf`
-7. Give the setup script execute permissions by typing `chmod u+x ./setup`
+1. By default you are, but make sure you are in `gitmirror`'s` home directory by typing `cd ~`
+2. Clone this repo by typing `git clone https://github.com/Facinorous-420/gitmirrors-bs.git`
+3. Enter the new directory by typing `cd gitmirrors-bs`
+4. Edit setup.conf by typing `nano setup.conf`
+5. Give the setup script execute permissions by typing `chmod u+x ./setup`
 <br>
 
 Be sure to read the config and change all things to your desired specifications. Refer to the comments in that file for info on what everything is.
@@ -41,9 +42,9 @@ Do not edit anything under the system variables section, only the user variables
 **NOTE:** Currently you must create the groups in gitlab using the `gitmirror` user manually. This will be changed in a future update. Once this text is gone, it'll be automatic.
 <br>
 
-8. Run `./setup` to begin the automatic set up process. 
-9. Once the set up is done, you will be given a SSH key. Login to your `gitmirror` account on your gitlab instance, and add that SSH key to it.
-10. Run `./setcron` to add the mirror cron jobs to the users cron table
+6. Run `./setup` to begin the automatic set up process. 
+7. Once the set up is done, you will be given a SSH key. Login to your `gitmirror` account on your gitlab instance, and add that SSH key to it.
+8. Run `./setcron` to add the mirror cron jobs to the users cron table
 
 # Mirroring
 
