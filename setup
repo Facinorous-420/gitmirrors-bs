@@ -8,7 +8,8 @@
 for group in "${groupArray[@]}"; do
 git clone $gitmirrorsRepo ~/$projectLocation/mirrormanagement/$group
 chmod 755 ~/$projectLocation/mirrormanagement/$group/*.sh
-sed "37s/.*/gitlab_namespace=\"${group}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh.SAMPLE > ~/$projectLocation/mirrormanagement/$group/config.sh
+sed "10s,.*,user_home=\"/home/${system_user}/gitmirrors-bs\"," ~/$projectLocation/mirrormanagement/$group/config.sh.SAMPLE > ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "37s/.*/gitlab_namespace=\"${group}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "39s,.*,gitlab_url=\"${gitlabURL}\"," ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "42s/.*/gitlab_user=\"${gitlabUser}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "50s/.*/http_remote=true/" ~/$projectLocation/mirrormanagement/$group/config.sh
@@ -62,15 +63,16 @@ cat > update <<EOF
 for group in "${groupArray[@]}"; do
 git pull $gitmirrorsRepo ~/$projectLocation/mirrormanagement/$group
 chmod 755 ~/$projectLocation/mirrormanagement/$group/*.sh
-sed "37s/.*/gitlab_namespace=\"${group}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh.SAMPLE > ~/$projectLocation/mirrormanagement/$group/config.sh
-sed -i "39s/.*/gitlab_url=\"${gitlabURL}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed "10s,.*,user_home=\"/home/${system_user}/gitmirrors-bs\"," ~/$projectLocation/mirrormanagement/$group/config.sh.SAMPLE > ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "37s/.*/gitlab_namespace=\"${group}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "39s,.*,gitlab_url=\"${gitlabURL}\"," ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "42s/.*/gitlab_user=\"${gitlabUser}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "50s/.*/http_remote=true/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "58s/.*/issues_enabled=\"${issues_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "59s/.*/wall_enabled=\"${wall_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "60s/.*/wiki_enabled=\"${wiki_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "61s/.*/snippets_enabled=\"${snippets_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
-sed -i "62s/.*/gitlab_user=\"${merge_requests_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
+sed -i "62s/.*/merge_requests_enabled=\"${merge_requests_enabled}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 sed -i "63s/.*/public=\"${public}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 done
 
