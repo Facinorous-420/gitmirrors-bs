@@ -23,7 +23,7 @@ TODO:
 
 # Script Set Up
 
-1. By default you are, but make sure you are in `gitmirror`'s` home directory by typing `cd ~`
+1. By default you are, but make sure you are in `gitmirror`'s home directory by typing `cd ~`
 2. Clone this repo by typing `git clone https://github.com/Facinorous-420/gitmirrors-bs.git`
 3. Enter the new directory by typing `cd gitmirrors-bs`
 4. Edit setup.conf by typing `nano setup.conf`
