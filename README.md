@@ -51,6 +51,9 @@ The full syntax for the command is `./mirror -g GROUPNAME -n REPONAME -r SOURCER
 Where `-g` means **destination group name**, `-n` means **destination repo name**, and `-r` means **source repo location**
 <br>
 
+These scripts are meant for mirroring using HTTP not SSH. I'll add an option to pick between the two in the future.
+<br>
+
 The first time you run this command, it will ask you to enter the `gitmirror` details for your Gitlab instance. I'm going to try to make this as hands free as possible in the future.
 <br>
 
