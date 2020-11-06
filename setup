@@ -381,7 +381,6 @@ cat > creategroups <<'EOF'
 . ./setup.conf
 
 for group in "${groupArray[@]}"; do
-  echo "Creating all groups"
   (cd ~/$projectLocation/mirrormanagement/$group && ./create_group.sh)
 done
 
