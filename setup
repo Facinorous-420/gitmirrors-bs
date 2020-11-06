@@ -23,7 +23,7 @@ sed -i "62s/.*/merge_requests_enabled=\"${merge_requests_enabled}\"/" ~/$project
 sed -i "63s/.*/public=\"${public}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 
 
-cat > ~/$projectLocation/mirrormanagement/$group/create_group.sh <<'EOF'
+cat > ~/$projectLocation/mirrormanagement/$group/create_group.sh <<EOF
 #!/bin/bash
 
 #bash option stop on first error
@@ -54,7 +54,7 @@ no_create_set="${no_create_set:-false}"
 no_remote_set="${no_remote_set:-false}"
 http_remote="${http_remote:-false}"
 
-python lib/manage_gitlab_project.py --creategroup ${gitlab_namespace}
+python ./lib/manage_gitlab_project.py --creategroup ${gitlab_namespace}
 EOF
 chmod u+x ~/$projectLocation/mirrormanagement/$group/create_group.sh
 
@@ -375,7 +375,7 @@ chmod u+x mirror
 
 
 # Generate creategroup script.
-cat > creategroup <<EOF
+cat > creategroups <<EOF
 
 for group in "${groupArray[@]}"; do
   echo "Creating all groups"
@@ -383,7 +383,7 @@ for group in "${groupArray[@]}"; do
 done
 
 EOF
-chmod u+x creategroup
+chmod u+x creategroups
 
 
 echo ""
