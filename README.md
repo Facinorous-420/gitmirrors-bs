@@ -1,6 +1,3 @@
-TODO:
-1. Make & test creategroups script < TO BE AIRED >
-
 # Prerequisites
 
 ### Required software
