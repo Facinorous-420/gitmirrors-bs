@@ -377,18 +377,13 @@ chmod u+x mirror
 # Generate creategroup script.
 cat > creategroup <<EOF
 
-
 for group in "${groupArray[@]}"; do
   echo "Creating all groups"
   ~/$projectLocation/mirrormanagement/$group/create_group.sh
 done
 
 EOF
-done
-
-EOF
 chmod u+x creategroup
-
 
 
 echo ""
