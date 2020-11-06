@@ -61,7 +61,7 @@ If you at any time want to add more groups you can mirror to, simply add them to
 
 # Updating
 
-You might find out that gitlab-mirror doesn't actually update that often. Although, if it ever does, you can simply run `./update` to update your project's gitlab-mirror.
+You might find out that gitlab-mirror doesn't actually update that often as it's a pretty solid code base. Although, if it ever does, you can simply run `./update` to update your project's gitlab-mirror.
 
 # File Structure
 
