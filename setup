@@ -23,7 +23,7 @@ sed -i "62s/.*/merge_requests_enabled=\"${merge_requests_enabled}\"/" ~/$project
 sed -i "63s/.*/public=\"${public}\"/" ~/$projectLocation/mirrormanagement/$group/config.sh
 
 
-cat > ~/$projectLocation/mirrormanagement/$group/create_group.sh <<EOF
+cat > ~/$projectLocation/mirrormanagement/$group/create_group.sh <<'EOF'
 #!/bin/bash
 
 #bash option stop on first error
