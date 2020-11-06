@@ -41,6 +41,7 @@ Do not edit anything under the system variables section, only the user variables
 6. Run `./setup` to begin the automatic set up process. 
 7. Once the set up is done, you will be given a SSH key. Login to your `gitmirror` account on your gitlab instance, and add that SSH key to it.
 8. Run `./setcron` to add the mirror cron jobs to the users cron table
+9. Run `./creategroups` to create all the groups inside of your gitlab automatically
 
 # Mirroring
 
@@ -57,7 +58,7 @@ These scripts are meant for mirroring using HTTP not SSH. I'll add an option to 
 The first time you run this command, it will ask you to enter the `gitmirror` details for your Gitlab instance. I'm going to try to make this as hands free as possible in the future.
 <br>
 
-If you at any time want to add more groups you can mirror to, simply add them to the setup.conf file and redo steps **6** and **8** in the Scripts Set Up Section above.
+If you at any time want to add more groups you can mirror to, simply add them to the setup.conf file and redo steps **6**, **8**, and **9** in the Scripts Set Up Section above.
 
 # Updating
 
