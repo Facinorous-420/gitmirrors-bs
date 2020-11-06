@@ -1,5 +1,6 @@
 I had wanted to set up a way to easily get gitlab-mirrors set up and running, while managing multiple mirror grouls easily. This lead me to create this repo, which more or less automated the installation of those scripts and group creation. If anything doesnt work, feel free to open an issue and Ill take a look at it. I am no way a professional at bash, so my code probably isn't the best and I am open for any PRs that may make it a better and a more streamlined set up. Have fun.
 
+Every step below is needed to get this to work. Please read carefully and do everything it says. Refer to the original repo referenced at the bottom of this README in exactly how the mirroring works, and how you can configure it further than what my scripts will automatically configure for you. **NOTE:** if you edit files within `mirrormanagement` then the `update` script will overwrite your changes. Make sure to back them up, or open an issue and Ill add the option youre trying to add into the automation.
 
 # Prerequisites
 
