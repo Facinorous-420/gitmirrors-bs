@@ -34,9 +34,6 @@ Be sure to read the config and change all things to your desired specifications.
 Do not edit anything under the system variables section, only the user variables. You'll need to generate a Personal Access Token in the user `gitmirror` on gitlab for the config.
 <br>
 
-**NOTE:** Currently you must create the groups in gitlab using the `gitmirror` user manually. This will be changed in a future update. Once this text is gone, it'll be automatic.
-<br>
-
 6. Run `./setup` to begin the automatic set up process. 
 7. Once the set up is done, you will be given a SSH key. Login to your `gitmirror` account on your gitlab instance, and add that SSH key to it.
 8. Run `./setcron` to add the mirror cron jobs to the users cron table
