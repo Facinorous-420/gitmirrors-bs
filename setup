@@ -382,7 +382,7 @@ cat > creategroups <<'EOF'
 
 for group in "${groupArray[@]}"; do
   echo "Creating all groups"
-  ~/$projectLocation/mirrormanagement/$group/create_group.sh
+  (cd ~/$projectLocation/mirrormanagement/$group && ./create_group.sh)
 done
 
 EOF
