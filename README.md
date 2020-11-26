@@ -49,6 +49,8 @@ Run <code>./mirror</code> to set up a mirror
 <br>
 
 The full syntax for the command is `./mirror -g GROUPNAME -n REPONAME -r SOURCEREPOLOCATION`
+<br>
+
 Where `-g` means **destination group name**, `-n` means **destination repo name**, and `-r` means **source repo location**
 <br>
 
